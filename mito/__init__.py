@@ -1,5 +1,8 @@
 import os
+import sys
+import json
 from flask import Flask
+from flask_github import GitHub
 
 app = Flask(__name__)
 
@@ -15,9 +18,40 @@ overridden_config = {k:v for k, v in os.environ.items() if k in app.config}
 app.config.update(overridden_config)
 
 """
+Configure the database map
+"""
+from mito.db import create_mongo_clients, create_mongo_meta_client
+mongo_clients = create_mongo_clients(json.loads(app.config['DB_JSON']))
+mongo_meta_client = create_mongo_meta_client(json.loads(app.config['META_DB_JSON']))
+
+if len(mongo_clients) == 0:
+    print("No mongoDB configured! Check your environment varaibled 'DB_JSON'")
+    sys.exit(1)
+
+"""
+Session based Flask login initialization
+"""
+from flask_login import LoginManager
+from mito.dao import UserDao
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    db_user = UserDao.get_by_id(user_id)
+    return db_user
+
+"""
+Github based login initialization
+"""
+github = GitHub(app)
+
+"""
 Registering all blueprints.
 """
-from mito.views import pages, status
+from mito.views import pages, status, login_callbacks
 
 app.register_blueprint(pages.mod)
 app.register_blueprint(status.mod, url_prefix='/status')
+app.register_blueprint(login_callbacks.mod, url_prefix='/callback/login')
