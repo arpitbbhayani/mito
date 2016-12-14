@@ -1,0 +1,10 @@
+<div class="ui inverted black borderless menu top">
+    <a href="#" class="item">
+        Mito
+    </a>
+    {% if is_authenticated %}
+      <a href="{{url_for('pages.logout')}}" class="item">Logout</a>
+    {% else %}
+      <a href="{{url_for('pages.login')}}" class="item">Login with Github</a>
+    {% endif %}
+</div>

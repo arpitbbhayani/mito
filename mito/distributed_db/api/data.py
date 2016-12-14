@@ -32,4 +32,10 @@ def get(cls, guid):
     dbindex, collection_name, document_id = GUID.decode(guid)
     client = get_mongo_shard_client_by_dbindex(dbindex)
     data = client.mitodb[cls.__discriminator__].find_one({'_id': ObjectId(document_id)})
-    return cls.from_dict(data)
+
+    if data is None:
+        return None
+
+    obj = cls.from_dict(data)
+    obj.id = guid
+    return obj

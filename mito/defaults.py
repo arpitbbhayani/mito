@@ -1,4 +1,9 @@
 """
+Flask app based settings
+"""
+SERVER_NAME = 'localhost:5000'
+
+"""
 Setting for Flask-Login
 """
 SECRET_KEY = 'default-secret-key'

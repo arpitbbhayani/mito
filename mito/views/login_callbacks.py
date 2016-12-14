@@ -20,9 +20,13 @@ def github_login_callback(oauth_token):
 
     user_email = emails[0]['email']
     user = UserDao.get_by_email(user_email)
+    print("User", user)
     if user is None:
+        print("User is none hence creating one")
         user = User(email=user_email)
         user = UserDao.create(user)
+
+    print("Login with user", user, type(user))
 
     login_user(user)
     return redirect(next_url)

@@ -1,6 +1,6 @@
 from mito import mongo_meta_client
 from mito.distributed_db.utils import get_index_collection_name, get_mongo_shard_client
-
+from mito.distributed_db.api import data as data_api
 
 def add(obj):
     for attr in obj.__indexed_attrs__:
@@ -27,7 +27,11 @@ def get_one(cls, attr, value):
     collection_name = get_index_collection_name(cls, attr)
     db = client['indexdb']
     db_user = db[collection_name].find_one({"values": {"$in": [value]}})
-    return db_user
+
+    if db_user is None:
+        return None
+
+    return data_api.get(cls, db_user['_id'])
 
 
 def update(obj):
