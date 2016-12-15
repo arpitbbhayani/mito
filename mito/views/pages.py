@@ -37,7 +37,7 @@ def logout():
 @login_required
 def dashboard():
     return LayoutSR(
-        Component('daily-activity-tracker', dashboard_page.render_dat),
+        Component('notes', dashboard_page.render_dat),
         layout=Layout(dashboard_page.render_layout),
         pre_stream=(Dom(common_page.render_pre_body),
                     Dom(common_page.render_top_menu, is_authenticated=current_user.is_authenticated)),

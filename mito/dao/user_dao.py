@@ -1,5 +1,4 @@
 from mito.entities import User
-from mito.distributed_db.guid import GUID
 from mito.distributed_db.api import index as index_api
 from mito.distributed_db.api import data as data_api
 

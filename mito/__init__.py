@@ -50,8 +50,9 @@ github = GitHub(app)
 """
 Registering all blueprints.
 """
-from mito.views import pages, status, login_callbacks
+from mito.views import pages, status, login_callbacks, notes
 
 app.register_blueprint(pages.mod)
 app.register_blueprint(status.mod, url_prefix='/status')
 app.register_blueprint(login_callbacks.mod, url_prefix='/callback/login')
+app.register_blueprint(notes.mod, url_prefix='/notes')
