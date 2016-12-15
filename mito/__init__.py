@@ -20,7 +20,7 @@ app.config.update(overridden_config)
 """
 Configure the database map
 """
-from mito.db import create_mongo_clients, create_mongo_meta_client
+from mito.distributed_db import create_mongo_clients, create_mongo_meta_client
 mongo_clients = create_mongo_clients(json.loads(app.config['DB_JSON']))
 mongo_meta_client = create_mongo_meta_client(json.loads(app.config['META_DB_JSON']))
 
