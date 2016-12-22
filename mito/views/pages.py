@@ -28,6 +28,7 @@ def login():
 
 
 @mod.route('/logout', methods=["GET"])
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('pages.index'))
@@ -37,7 +38,7 @@ def logout():
 @login_required
 def dashboard():
     return LayoutSR(
-        Component('notes', dashboard_page.render_dat),
+        Component('pending-articles', dashboard_page.render_pending_articles),
         layout=Layout(dashboard_page.render_layout),
         pre_stream=(Dom(common_page.render_pre_body),
                     Dom(common_page.render_top_menu, is_authenticated=current_user.is_authenticated)),

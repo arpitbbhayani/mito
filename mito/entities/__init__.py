@@ -1,3 +1,2 @@
-from .note import Note
-from .todo import Todo
 from .user import User
+from .article import Article
