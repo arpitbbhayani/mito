@@ -9,8 +9,6 @@ def get_mongo_shard_client(obj):
     shard_key_attr = obj.__shard_key__
     shard_key = str(getattr(obj, shard_key_attr))
     index = sum([ord(c) for c in shard_key]) % len(mongo_clients)
-    print("Object", obj.__dict__)
-    print("Shard Key = " + shard_key + " and index calculated is " + str(index))
     return mongo_clients[index], index
 
 

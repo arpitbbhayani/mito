@@ -1,7 +1,7 @@
 class Article:
     __shard_key__ = 'title'
     __discriminator__ = 'article'
-    __indexed_attrs__ = ['tags', 'company']
+    __indexed_attrs__ = ['tags', 'company', 'link']
     __attrs__ = ['title', 'body', 'tags', 'link', 'image', 'company',
                  'created_at', 'checksum']
 

@@ -9,6 +9,8 @@ def add(data):
     result = client.mitodb[data.__discriminator__].insert_one(data.__dict__)
     data.id = GUID.encode(dbindex, data.__discriminator__, result.inserted_id)
     index_api.add(data)
+
+    del data._id
     return data
 
 

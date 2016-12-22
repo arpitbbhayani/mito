@@ -1,11 +1,16 @@
-from flask import Blueprint
+from flask import Blueprint, request, jsonify
+
+from mito.entities import Article
+from mito.dao import ArticleDao
 
 mod = Blueprint('article_api', __name__, )
 
 
-@mod.route('/create', methods=["PUT"])
+@mod.route('/create', methods=["POST"])
 def create_article():
-    return "Create article"
+    article = Article(**request.json)
+    article = ArticleDao.create(article)
+    return jsonify(article.__dict__)
 
 
 @mod.route('/update/<article_id>', methods=["POST"])
