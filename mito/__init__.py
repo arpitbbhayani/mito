@@ -29,6 +29,13 @@ if len(mongo_clients) == 0:
     sys.exit(1)
 
 """
+Create Indexes in all of MongoDB instances
+"""
+from mito import db_init
+
+db_init.create_indexes()
+
+"""
 Session based Flask login initialization
 """
 from flask_login import LoginManager

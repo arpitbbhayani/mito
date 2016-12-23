@@ -1,4 +1,4 @@
-from mito import mongo_clients
+from mito import mongo_clients, mongo_meta_client
 
 
 def get_index_collection_name(entity_class, attr):
@@ -14,3 +14,11 @@ def get_mongo_shard_client(obj):
 
 def get_mongo_shard_client_by_dbindex(dbindex):
     return mongo_clients[int(dbindex)]
+
+
+def get_all_mongo_shard_clients():
+    return mongo_clients
+
+
+def get_mongo_meta_client():
+    return mongo_meta_client
