@@ -9,7 +9,10 @@ def add(obj):
             collection_name = get_index_collection_name(obj.__class__, attr)
             client = mongo_meta_client
             db = client.indexdb
-            db[collection_name].update({'_id': obj.id}, {'$addToSet': {"values": value}}, upsert=True)
+            if type(value) is list:
+                db[collection_name].update({'_id': obj.id}, {'$addToSet': {"values": {"$each": value}}}, upsert=True)
+            else:
+                db[collection_name].update({'_id': obj.id}, {'$addToSet': {"values": value}}, upsert=True)
 
 
 def delete(obj):
