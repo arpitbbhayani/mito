@@ -2,7 +2,7 @@ from flask import Blueprint, abort, url_for, session, redirect
 from flask_login import login_user
 
 from mito import github
-from mito.dao import UserDao
+from mito.services import user_service
 from mito.entities import User
 
 mod = Blueprint('login_callbacks', __name__, )
@@ -19,14 +19,17 @@ def github_login_callback(oauth_token):
     emails = github.get('user/emails')
 
     user_email = emails[0]['email']
-    user = UserDao.get_by_email(user_email)
-    print("User", user)
-    if user is None:
-        print("User is none hence creating one")
-        user = User(email=user_email)
-        user = UserDao.create(user)
+    user, error = user_service.get_by_email(user_email)
 
-    print("Login with user", user, type(user))
+    if error:
+        raise error
+
+    if user is None:
+        user = User(email=user_email)
+        user, error = user_service.create_user(user)
+
+        if error:
+            raise error
 
     login_user(user)
     return redirect(next_url)

@@ -6,6 +6,11 @@ from mito.distributed_db.api import data as data_api
 class UserDao:
     @staticmethod
     def create(user):
+        email = user.email
+        existing_user = index_api.get_one(User, 'email', email)
+        if existing_user:
+            raise DuplicateDataError("User with email '%s' already exists!" % (email))
+
         return data_api.add(user)
 
     @staticmethod

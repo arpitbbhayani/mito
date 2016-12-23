@@ -39,14 +39,14 @@ db_init.create_indexes()
 Session based Flask login initialization
 """
 from flask_login import LoginManager
-from mito.dao import UserDao
+from mito.services import user_service
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    db_user = UserDao.get_by_id(user_id)
+    db_user, error = user_service.get_by_id(user_id)
     return db_user
 
 """
