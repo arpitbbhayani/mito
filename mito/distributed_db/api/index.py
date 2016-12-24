@@ -10,9 +10,9 @@ def add(obj):
             client = mongo_meta_client
             db = client.indexdb
             if type(value) is list:
-                db[collection_name].update({'_id': obj.id}, {'$addToSet': {"values": {"$each": value}}}, upsert=True)
+                db[collection_name].update({'_id': obj.id}, {'$addToSet': {"value": {"$each": value}}}, upsert=True)
             else:
-                db[collection_name].update({'_id': obj.id}, {'$addToSet': {"values": value}}, upsert=True)
+                db[collection_name].update({'_id': obj.id}, {'$set': {"value": value}}, upsert=True)
 
 
 def delete(obj):
