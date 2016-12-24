@@ -57,18 +57,19 @@ github = GitHub(app)
 """
 Registering all blueprints.
 """
-from mito.views import pages, status, login_callbacks, articles, article
+from mito.views import pages, status, login_callbacks, articles, article, companies
 
 app.register_blueprint(pages.mod)
 app.register_blueprint(status.mod, url_prefix='/status')
 app.register_blueprint(login_callbacks.mod, url_prefix='/callback/login')
 app.register_blueprint(articles.mod, url_prefix='/articles')
 app.register_blueprint(article.mod, url_prefix='/article')
-
+app.register_blueprint(companies.mod, url_prefix='/companies')
 
 """
 Registering all APIs
 """
-from mito.api import article_api
+from mito.api import article_api, company_api
 
 app.register_blueprint(article_api.mod, url_prefix='/api/article')
+app.register_blueprint(company_api.mod, url_prefix='/api/company')
