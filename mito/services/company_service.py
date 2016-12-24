@@ -29,10 +29,19 @@ def delete_company(company_name):
     return is_deleted, error
 
 
-def get_all_companies():
+def get_all_active_companies():
     error = None
     try:
         companies = CompanyDao.get_all_active()
+    except MitoError as m:
+        error = m
+    return companies, error
+
+
+def get_all_companies():
+    error = None
+    try:
+        companies = CompanyDao.get_all_active() + CompanyDao.get_all_inactive()
     except MitoError as m:
         error = m
     return companies, error

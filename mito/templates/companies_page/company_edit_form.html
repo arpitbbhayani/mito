@@ -10,7 +10,7 @@
     <div class="field">
         <div class="ui checkbox">
             <label>Is Active?</label>
-            <input name="is_active" type="checkbox" tabindex="0" class="hidden" checked="{{company.is_active}}">
+            <input name="is_active" type="checkbox" tabindex="0" class="hidden" {% if company.is_active %}checked{% endif %}>
         </div>
     </div>
     <div class="field">

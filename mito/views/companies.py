@@ -12,6 +12,22 @@ mod = Blueprint('companies', __name__, )
 @mod.route('/', methods=["GET"])
 @login_required
 def index():
+    companies, error = company_service.get_all_active_companies()
+    if error:
+        return jsonify(error.jsonify())
+    return LayoutSR(
+        Component('companies-actions', companies_page.render_companies_action_buttons),
+        Component('companies', companies_page.render_companies, companies=companies),
+        layout=Layout(companies_page.render_layout),
+        pre_stream=(Dom(common_page.render_pre_body),
+                    Dom(common_page.render_top_menu, current_user.is_authenticated)),
+        post_stream=Dom(common_page.render_post_body)
+    ).response
+
+
+@mod.route('/all', methods=["GET"])
+@login_required
+def all_companies():
     companies, error = company_service.get_all_companies()
     if error:
         return jsonify(error.jsonify())
@@ -58,7 +74,6 @@ def add_company():
 def edit_company(company_name):
     if request.method == 'GET':
         company, error = company_service.get_by_name(company_name)
-        print(company)
         if error:
             return jsonify(error.jsonify())
 
