@@ -1,4 +1,3 @@
-from bson.objectid import ObjectId
 from mito.distributed_db import GUID
 from mito.distributed_db.api import index as index_api
 from mito.distributed_db.utils import get_mongo_shard_client, get_mongo_shard_client_by_dbindex
@@ -33,7 +32,7 @@ def delete(data):
 def get(cls, guid):
     dbindex, collection_name, document_id = GUID.decode(guid)
     client = get_mongo_shard_client_by_dbindex(dbindex)
-    data = client.mitodb[cls.__discriminator__].find_one({'_id': ObjectId(document_id)})
+    data = client.mitodb[cls.__discriminator__].find_one({'_id': document_id})
 
     if data is None:
         return None

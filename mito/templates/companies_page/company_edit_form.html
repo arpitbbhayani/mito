@@ -1,0 +1,27 @@
+<form class="ui form" method="POST" action="{{url_for('companies.edit_company', company_name=company.name)}}">
+    <div class="field">
+        <label>Name</label>
+        <input type="text" name="company_name" placeholder="Unique name for company" value="{{company.name}}">
+    </div>
+    <div class="field">
+        <label>Display Name</label>
+        <input type="text" name="display_name" placeholder="Display name for company" value="{{company.display_name}}">
+    </div>
+    <div class="field">
+        <div class="ui checkbox">
+            <label>Is Active?</label>
+            <input name="is_active" type="checkbox" tabindex="0" class="hidden" checked="{{company.is_active}}">
+        </div>
+    </div>
+    <div class="field">
+        <label>Small Icon URL</label>
+        <input type="text" name="icon64" placeholder="URL for icon (64x64)" value="{{company.icon64}}">
+    </div>
+    <div class="field">
+        <label>Large Icon URL</label>
+        <input type="text" name="icon256" placeholder="URL for icon (256x256)" value="{{company.icon256}}">
+    </div>
+    <div class="field">
+        <button class="ui button" type="submit">Submit</button>
+    </div>
+</form>

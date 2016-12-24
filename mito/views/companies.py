@@ -51,3 +51,40 @@ def add_company():
         flash(error.description, 'error')
 
     return redirect(url_for('companies.index'))
+
+
+@mod.route('/edit/<company_name>', methods=["GET", "POST"])
+@login_required
+def edit_company(company_name):
+    if request.method == 'GET':
+        company, error = company_service.get_by_name(company_name)
+        print(company)
+        if error:
+            return jsonify(error.jsonify())
+
+        return LayoutSR(
+            Component('company-edit-form', companies_page.render_company_edit_form, company),
+            layout=Layout(companies_page.render_layout_company_edit),
+            pre_stream=(Dom(common_page.render_pre_body),
+                        Dom(common_page.render_top_menu, current_user.is_authenticated)),
+            post_stream=Dom(common_page.render_post_body)
+        ).response
+
+    company_display_name = request.form.get('display_name')
+    company_icon64 = request.form.get('icon64')
+    company_icon256 = request.form.get('icon256')
+    company_is_active = request.form.get('is_active') or False
+
+    if company_is_active == 'on':
+        company_is_active = True
+
+    company = Company(name=company_name, display_name=company_display_name,
+                      icon64=company_icon64, icon256=company_icon256,
+                      is_active=company_is_active)
+
+    company, error = company_service.update_company(company)
+
+    if error:
+        flash(error.description, 'error')
+
+    return redirect(url_for('companies.index'))

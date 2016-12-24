@@ -16,7 +16,9 @@ class CompanyDao:
 
     @staticmethod
     def update(company):
-        print("Updating the company")
+        db_company = index_api.get_one(Company, 'name', company.name)
+        db_company.__dict__.update(company.__dict__)
+        return data_api.update(db_company)
 
     @staticmethod
     def get_by_id(guid):
@@ -30,3 +32,7 @@ class CompanyDao:
     def delete_by_name(company_name):
         company = index_api.get_one(Company, 'name', company_name, is_list=False)
         return data_api.delete(company)
+
+    @staticmethod
+    def get_by_name(company_name):
+        return index_api.get_one(Company, 'name', company_name, is_list=False)

@@ -26,3 +26,13 @@ def render_company_add_form():
 def render_layout_company_add():
     with app.app_context():
         return render_template('companies_page/company_add_form_layout.html')
+
+
+def render_company_edit_form(company):
+    with app.app_context():
+        return render_template('companies_page/company_edit_form.html', company=company)
+
+
+def render_layout_company_edit():
+    with app.app_context():
+        return render_template('companies_page/company_edit_form_layout.html')
