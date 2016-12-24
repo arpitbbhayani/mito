@@ -25,16 +25,20 @@ def delete(obj):
             db[collection_name].remove({'_id': obj.id})
 
 
-def get_one(cls, attr, value):
+def get_one(cls, attr, value, is_list=False):
     client = mongo_meta_client
     collection_name = get_index_collection_name(cls, attr)
     db = client['indexdb']
-    db_user = db[collection_name].find_one({"values": {"$in": [value]}})
 
-    if db_user is None:
+    if is_list:
+        db_entity = db[collection_name].find_one({"value": {"$in": [value]}})
+    else:
+        db_entity = db[collection_name].find_one({"value": value})
+
+    if db_entity is None:
         return None
 
-    return data_api.get(cls, db_user['_id'])
+    return data_api.get(cls, db_entity['_id'])
 
 
 def update(obj):
