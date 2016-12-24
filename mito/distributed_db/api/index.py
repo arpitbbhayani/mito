@@ -41,6 +41,19 @@ def get_one(cls, attr, value, is_list=False):
     return data_api.get(cls, db_entity['_id'])
 
 
+def get_all(cls, attr, value, is_list=False):
+    client = mongo_meta_client
+    collection_name = get_index_collection_name(cls, attr)
+    db = client['indexdb']
+
+    if is_list:
+        db_entities = db[collection_name].find({"value": {"$in": [value]}})
+    else:
+        db_entities = db[collection_name].find({"value": value})
+
+    return [data_api.get(cls, db_entity['_id']) for db_entity in db_entities]
+
+
 def update(obj):
     delete(obj)
     add(obj)

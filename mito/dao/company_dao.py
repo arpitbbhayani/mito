@@ -21,3 +21,12 @@ class CompanyDao:
     @staticmethod
     def get_by_id(guid):
         return data_api.get(Company, guid)
+
+    @staticmethod
+    def get_all_active():
+        return index_api.get_all(Company, 'is_active', True, is_list=False)
+
+    @staticmethod
+    def delete_by_name(company_name):
+        company = index_api.get_one(Company, 'name', company_name, is_list=False)
+        return data_api.delete(company)

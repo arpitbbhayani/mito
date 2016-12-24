@@ -1,3 +1,26 @@
 <div class="ui segment">
-  <h3><a href="{{url_for('companies.index')}}">Companies</a></h3>
+    {% for company in companies %}
+    <div class="ui segment">
+        <div class="ui header"><h3>{{company.display_name}}</h3></div>
+        <div class="ui divider"></div>
+        <div class="ui form">
+            <div class="field">
+                <label>Name</label>
+                <input type="text" readonly value="{{company.name}}"/>
+            </div>
+            <div class="field">
+                <label>Active?</label>
+                <input type="text" readonly value="{{company.is_active}}"/>
+            </div>
+            <div class="field">
+                <label>Icon (64x64)</label>
+                <input type="text" readonly value="{{company.icon64}}"/>
+            </div>
+            <div class="field">
+                <label>Icon (256x256)</label>
+                <input type="text" readonly value="{{company.icon256}}"/>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>

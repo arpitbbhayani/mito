@@ -1,8 +1,8 @@
 class Company:
     __shard_key__ = 'name'
     __discriminator__ = 'company'
-    __indexed_attrs__ = ['name']
-    __attrs__ = ['name', 'display_name', 'icon64', 'icon256', 'blog_url']
+    __indexed_attrs__ = ['name', 'is_active']
+    __attrs__ = ['name', 'display_name', 'icon64', 'icon256', 'blog_url', 'is_active']
 
     def __init__(self, **kwargs):
         data = {k: v for k, v in kwargs.items() if k in self.__attrs__}

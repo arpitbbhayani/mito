@@ -1,0 +1,21 @@
+<form class="ui form" method="POST" action="{{url_for('companies.add_company')}}">
+    <div class="field">
+        <label>Name</label>
+        <input type="text" name="company_name" placeholder="Unique name for company">
+    </div>
+    <div class="field">
+        <label>Display Name</label>
+        <input type="text" name="display_name" placeholder="Display name for company">
+    </div>
+    <div class="field">
+        <label>Small Icon URL</label>
+        <input type="text" name="icon64" placeholder="URL for icon (64x64)">
+    </div>
+    <div class="field">
+        <label>Large Icon URL</label>
+        <input type="text" name="icon256" placeholder="URL for icon (256x256)">
+    </div>
+    <div class="field">
+        <button class="ui button" type="submit">Submit</button>
+    </div>
+</form>
