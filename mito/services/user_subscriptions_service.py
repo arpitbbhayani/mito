@@ -20,7 +20,7 @@ def create_user_subscription(user_subscription):
     return user_subscription, error
 
 
-def subscribe(user_id, company_id):
+def subscribe_to_company(user_id, company_id):
     error = None
     try:
         company = CompanyDao.get_by_id(company_id)
@@ -32,6 +32,24 @@ def subscribe(user_id, company_id):
             raise EntityNotFoundError("User subscription for user '%s' not found" % (user_id))
 
         user_subscription.company_ids = list(set(user_subscription.company_ids + [company_id]))
+        user_subscription = UserSubscriptionDao.update(user_subscription)
+    except MitoError as m:
+        error = m
+    return user_subscription, error
+
+
+def unsubscribe_from_company(user_id, company_id):
+    error = None
+    try:
+        company = CompanyDao.get_by_id(company_id)
+        if company is None:
+            raise EntityNotFoundError("Company with id '%s' not found" % (company_id))
+
+        user_subscription = UserSubscriptionDao.get_by_userid(user_id)
+        if user_subscription is None:
+            raise EntityNotFoundError("User subscription for user '%s' not found" % (user_id))
+
+        user_subscription.company_ids.remove(company_id)
         user_subscription = UserSubscriptionDao.update(user_subscription)
     except MitoError as m:
         error = m

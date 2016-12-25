@@ -36,11 +36,23 @@ def create_subscription():
     return redirect(url_for('user_subscriptions.index'))
 
 
-@mod.route('/<company_id>/subscribe', methods=["POST"])
+@mod.route('/company/<company_id>/subscribe', methods=["POST"])
 @login_required
-def subscribe_user(company_id):
+def subscribe_to_company(company_id):
     user_id = current_user.id
-    user_subscription, error = user_subscriptions_service.subscribe(user_id, company_id)
+    user_subscription, error = user_subscriptions_service.subscribe_to_company(user_id, company_id)
+
+    if error:
+        return jsonify(error.jsonify())
+
+    return redirect(url_for('user_subscriptions.index'))
+
+
+@mod.route('/company/<company_id>/unsubscribe', methods=["POST"])
+@login_required
+def unsubscribe_from_company(company_id):
+    user_id = current_user.id
+    user_subscription, error = user_subscriptions_service.unsubscribe_from_company(user_id, company_id)
 
     if error:
         return jsonify(error.jsonify())

@@ -54,3 +54,12 @@ def get_by_name(company_name):
     except MitoError as m:
         error = m
     return companies, error
+
+
+def get_by_id(company_id):
+    error = None
+    try:
+        company = CompanyDao.get_by_id(company_id)
+    except MitoError as m:
+        error = m
+    return company, error

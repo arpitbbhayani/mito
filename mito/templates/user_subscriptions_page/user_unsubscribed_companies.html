@@ -1,8 +1,9 @@
 <div class="ui list">
     {% for company in unsubscribed_companies %}
     <div class="ui item">
-        <form class="ui form" method="POST" action="{{url_for('user_subscriptions.subscribe_user', company_id=company.id)}}">
+        <form class="ui form" method="POST" action="{{url_for('user_subscriptions.subscribe_to_company', company_id=company.id)}}">
             <div class="field">
+                <label>{{company.display_name}}</label>
                 <button type="submit">Subscribe</button>
             </div>
         </form>

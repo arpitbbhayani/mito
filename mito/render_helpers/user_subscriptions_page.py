@@ -14,6 +14,12 @@ def render_user_subscription(user_id):
         user_subscription, error = user_subscriptions_service.get_subscriptions_for_user(user_id)
         if error:
             return error.description
+
+        user_subscription.companies = []
+        for company_id in user_subscription.company_ids:
+            company, error = company_service.get_by_id(company_id)
+            user_subscription.companies.append(company)
+
         return render_template('user_subscriptions_page/user_subscriptions.html', user_subscription=user_subscription)
 
 
