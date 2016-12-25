@@ -12,12 +12,9 @@ mod = Blueprint('companies', __name__, )
 @mod.route('/', methods=["GET"])
 @login_required
 def index():
-    companies, error = company_service.get_all_active_companies()
-    if error:
-        return jsonify(error.jsonify())
     return LayoutSR(
         Component('companies-actions', companies_page.render_companies_action_buttons),
-        Component('companies', companies_page.render_companies, companies=companies),
+        Component('companies', companies_page.render_active_companies),
         layout=Layout(companies_page.render_layout),
         pre_stream=(Dom(common_page.render_pre_body),
                     Dom(common_page.render_top_menu, current_user.is_authenticated)),
@@ -28,12 +25,9 @@ def index():
 @mod.route('/all', methods=["GET"])
 @login_required
 def all_companies():
-    companies, error = company_service.get_all_companies()
-    if error:
-        return jsonify(error.jsonify())
     return LayoutSR(
         Component('companies-actions', companies_page.render_companies_action_buttons),
-        Component('companies', companies_page.render_companies, companies=companies),
+        Component('companies', companies_page.render_all_companies),
         layout=Layout(companies_page.render_layout),
         pre_stream=(Dom(common_page.render_pre_body),
                     Dom(common_page.render_top_menu, current_user.is_authenticated)),
@@ -73,12 +67,8 @@ def add_company():
 @login_required
 def edit_company(company_name):
     if request.method == 'GET':
-        company, error = company_service.get_by_name(company_name)
-        if error:
-            return jsonify(error.jsonify())
-
         return LayoutSR(
-            Component('company-edit-form', companies_page.render_company_edit_form, company),
+            Component('company-edit-form', companies_page.render_company_edit_form, company_name),
             layout=Layout(companies_page.render_layout_company_edit),
             pre_stream=(Dom(common_page.render_pre_body),
                         Dom(common_page.render_top_menu, current_user.is_authenticated)),
