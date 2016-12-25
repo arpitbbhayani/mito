@@ -1,0 +1,22 @@
+<div class="ui segment">
+    <div class="ui segment">
+        {% if user_subscription == None %}
+        <form class="ui form" method="POST" action="{{url_for('user_subscriptions.create_subscription')}}">
+            <div class="ui field">
+                <button class="ui button" type="submit">Create your first subscription</button>
+            </div>
+        </form>
+        {% else %}
+            <div class="ui form">
+                <div class="ui field">
+                    <label>Companies you subscribed to</label>
+                    <div class="ui list">
+                        {% for company in companies %}
+                        <p>{{company}}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
