@@ -17,3 +17,9 @@ class UserSubscriptionDao:
             raise DuplicateDataError("User subscription for user '%s' already exists!" % (user_id))
 
         return data_api.add(user_subscription)
+
+    @staticmethod
+    def update(user_subscription):
+        db_user_subscription = data_api.get(UserSubscription, user_subscription.id)
+        db_user_subscription.__dict__.update(user_subscription.__dict__)
+        return data_api.update(db_user_subscription)
