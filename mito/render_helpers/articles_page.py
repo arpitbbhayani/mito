@@ -8,11 +8,11 @@ def render_layout():
         return render_template('articles_page/layout.html')
 
 
-def render_pending_articles(articles):
+def render_articles(user_id, articles):
     with app.app_context():
-        return render_template('articles_page/pending_articles.html', articles=articles)
+        return render_template('articles_page/articles.html', articles=articles)
 
 
-def render_pending_articles_action_buttons():
+def render_articles_action_buttons(article_state):
     with app.app_context():
-        return render_template('articles_page/pending_articles_actions.html')
+        return render_template('articles_page/articles_actions.html', article_state=article_state)

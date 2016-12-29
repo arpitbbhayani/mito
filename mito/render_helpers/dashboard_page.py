@@ -5,7 +5,7 @@ from mito import app
 
 def render_pending_articles():
     with app.app_context():
-        return render_template('articles_page/pending_articles.html')
+        return render_template('articles_page/articles.html')
 
 
 def render_layout():
