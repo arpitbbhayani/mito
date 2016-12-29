@@ -2,10 +2,10 @@ from mito.dao import UserSubscriptionDao, UserBucketDao
 from mito.errors import MitoError, EntityNotFoundError
 
 
-def get_articles_by_state(user_id, article_state, count=5):
+def get_articles_from_bucket(user_id, bucket_name, count=5):
     error = None
     try:
-        user_bucket = UserBucketDao.get_article_ids_by_state(user_id, article_state, count=count)
+        user_bucket = UserBucketDao.get_article_ids_from_bucket(user_id, bucket_name, count=count)
     except MitoError as m:
         error = m
     return user_bucket, error

@@ -20,12 +20,12 @@ def index():
     ).response
 
 
-@mod.route('/<article_state>', methods=["GET"])
+@mod.route('/<bucket_name>', methods=["GET"])
 @login_required
-def get_articles_by_state(article_state):
+def get_articles_from_bucket(bucket_name):
     return LayoutSR(
         Component('articles-actions', articles_page.render_articles_action_buttons),
-        Component('articles', articles_page.render_articles, current_user.id, article_state),
+        Component('articles', articles_page.render_articles, current_user.id, bucket_name),
         layout=Layout(articles_page.render_layout),
         pre_stream=(Dom(common_page.render_pre_body),
                     Dom(common_page.render_top_menu, current_user.is_authenticated)),
@@ -35,7 +35,7 @@ def get_articles_by_state(article_state):
 
 @mod.route('/unread/populate', methods=["POST"])
 @login_required
-def populate_by_state():
+def populate_from_bucket():
     """Takes articles from recommended into puts them into unread
     """
     user_id = current_user.id

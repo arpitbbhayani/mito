@@ -19,8 +19,8 @@ def render_layout():
         return render_template('articles_page/layout.html')
 
 
-def render_articles(user_id, article_state):
-    articles, error = user_bucket_service.get_articles_by_state(user_id, article_state)
+def render_articles(user_id, bucket_name):
+    articles, error = user_bucket_service.get_articles_from_bucket(user_id, bucket_name)
     with app.app_context():
         return render_template('articles_page/articles.html', articles=articles)
 

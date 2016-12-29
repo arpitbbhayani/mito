@@ -1,15 +1,15 @@
 <div class="ui list">
     <div class="ui item">
-        <a href="{{url_for('articles.get_articles_by_state', article_state='unread')}}">Unread Articles</a>
+        <a href="{{url_for('articles.get_articles_from_bucket', bucket_name='unread')}}">Unread Articles</a>
     </div>
     <div class="ui item">
-        <a href="{{url_for('articles.get_articles_by_state', article_state='read')}}">Read Articles</a>
+        <a href="{{url_for('articles.get_articles_from_bucket', bucket_name='read')}}">Read Articles</a>
     </div>
     <div class="ui item">
-        <a href="{{url_for('articles.get_articles_by_state', article_state='recommended')}}">Recommended Articles</a>
+        <a href="{{url_for('articles.get_articles_from_bucket', bucket_name='recommended')}}">Recommended Articles</a>
     </div>
     <div class="ui item">
-        <form class="ui form" method="POST" action="{{url_for('articles.populate_by_state')}}">
+        <form class="ui form" method="POST" action="{{url_for('articles.populate_from_bucket')}}">
             <input type="submit" class="ui button" value="Populate Unread Articles"></input>
         </form>
     </div>
