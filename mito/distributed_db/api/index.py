@@ -25,7 +25,7 @@ def delete(obj):
             db[collection_name].remove({'_id': obj.id})
 
 
-def get_one(cls, attr, value, is_list=False):
+def get_one(cls, attr, value, is_list=False, projection=None):
     client = mongo_meta_client
     collection_name = get_index_collection_name(cls, attr)
     db = client['indexdb']
@@ -38,7 +38,7 @@ def get_one(cls, attr, value, is_list=False):
     if db_entity is None:
         return None
 
-    return data_api.get(cls, db_entity['_id'])
+    return data_api.get(cls, db_entity['_id'], projection=projection)
 
 
 def get_all(cls, attr, value, is_list=False):

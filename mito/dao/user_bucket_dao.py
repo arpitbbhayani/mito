@@ -10,6 +10,13 @@ class UserBucketDao:
         return index_api.get_one(UserBucket, 'user_id', user_id, is_list=False)
 
     @staticmethod
+    def get_article_ids_by_state(user_id, article_state, count=5):
+        projection = {
+            article_state: {'$slice': count}
+        }
+        return index_api.get_one(UserBucket, 'user_id', user_id, is_list=False, projection=projection)
+
+    @staticmethod
     def create(user_bucket):
         user_id = user_bucket.user_id
         existing_user_bucket = index_api.get_one(UserBucket, 'user_id', user_id, is_list=False)

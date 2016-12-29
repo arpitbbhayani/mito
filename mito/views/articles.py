@@ -33,10 +33,7 @@ def get_articles_by_state(article_state):
     ).response
 
 
-@mod.route('/<article_state>/populate', methods=["POST"])
+@mod.route('/unread/populate', methods=["POST"])
 @login_required
 def populate_by_state():
-    """Method should return the number of articles that are populated in the
-    user's bucket for state `article_state`
-    """
     return jsonify(count=0)

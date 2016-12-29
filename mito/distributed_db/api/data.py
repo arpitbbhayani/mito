@@ -29,10 +29,10 @@ def delete(data):
     return True
 
 
-def get(cls, guid):
+def get(cls, guid, projection=None):
     dbindex, collection_name, document_id = GUID.decode(guid)
     client = get_mongo_shard_client_by_dbindex(dbindex)
-    data = client.mitodb[cls.__discriminator__].find_one({'_id': document_id})
+    data = client.mitodb[cls.__discriminator__].find_one({'_id': document_id}, projection=projection)
 
     if data is None:
         return None
