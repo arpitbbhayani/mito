@@ -1,0 +1,11 @@
+<div class="ui list">
+    <div class="ui item">
+        <a href="{{url_for('articles.get_articles_by_state', article_state='unread')}}">Unread Articles</a>
+    </div>
+    <div class="ui item">
+        <a href="{{url_for('articles.get_articles_by_state', article_state='read')}}">Read Articles</a>
+    </div>
+    <div class="ui item">
+        <a href="{{url_for('articles.get_articles_by_state', article_state='recommended')}}">Recommended Articles</a>
+    </div>
+</div>
