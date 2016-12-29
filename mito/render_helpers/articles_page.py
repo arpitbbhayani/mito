@@ -21,7 +21,6 @@ def render_layout():
 
 def render_articles(user_id, article_state):
     articles, error = user_bucket_service.get_articles_by_state(user_id, article_state)
-    print(articles, error)
     with app.app_context():
         return render_template('articles_page/articles.html', articles=articles)
 

@@ -1,8 +1,9 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
 from flasksr import LayoutSR, Component, Dom, Layout
 
 from mito.render_helpers import common_page, articles_page
+from mito.services import user_bucket_service
 
 mod = Blueprint('articles', __name__, )
 
@@ -35,4 +36,8 @@ def get_articles_by_state(article_state):
 @mod.route('/unread/populate', methods=["POST"])
 @login_required
 def populate_by_state():
-    return jsonify(count=0)
+    """Takes articles from recommended into puts them into unread
+    """
+    user_id = current_user.id
+    actual_moved, error = user_bucket_service.move_articles(user_id, 'recommended', 'unread', count=5)
+    return jsonify(count=actual_moved)
