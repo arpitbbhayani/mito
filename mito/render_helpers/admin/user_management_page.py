@@ -11,6 +11,10 @@ def render_user_search_bar():
 
 def render_user_profile_edit_form(user_email):
     with app.app_context():
+
+        if user_email is None:
+            return ""
+
         user, error = user_service.get_by_email(user_email)
         if error:
             return error.description
@@ -23,6 +27,9 @@ def render_user_profile_edit_form(user_email):
 
 def render_user_subscriptions(user_email):
     with app.app_context():
+        if user_email is None:
+            return ""
+
         user, error = user_service.get_by_email(user_email)
         if error:
             return error.description
