@@ -7,6 +7,7 @@
         <a href="{{url_for('companies.index')}}" class="item">Companies</a>
         <a href="{{url_for('user_subscriptions.index')}}" class="item">Subscriptions</a>
         <a href="{{url_for('user.index')}}" class="item">Profile</a>
+        <a href="{{url_for('user_management.index')}}" class="item">Manage Users</a>
         <a href="{{url_for('pages.logout')}}" class="item">Logout</a>
     {% else %}
         <a href="{{url_for('pages.login')}}" class="item">Login with Github</a>
