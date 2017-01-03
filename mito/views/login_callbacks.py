@@ -25,7 +25,7 @@ def github_login_callback(oauth_token):
         raise error
 
     if user is None:
-        user = User(email=user_email)
+        user = User(email=user_email, roles=['user'])
         user, error = user_service.create_user(user)
 
         if error:
