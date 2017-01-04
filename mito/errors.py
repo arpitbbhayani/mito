@@ -19,3 +19,8 @@ class DuplicateDataError(MitoError):
 class EntityNotFoundError(MitoError):
     def __init__(self, message):
         MitoError.__init__(self, 'ENTITY_NOT_FOUND_ERROR', message)
+
+
+class MitoTypeError(MitoError):
+    def __init__(self, message):
+        MitoError.__init__(self, 'ENTITY_TYPE_ERROR', message)

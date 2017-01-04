@@ -1,5 +1,5 @@
 from mito.dao import UserSubscriptionDao, UserBucketDao
-from mito.errors import MitoError, EntityNotFoundError
+from mito.errors import MitoError, EntityNotFoundError, MitoTypeError
 
 
 def get_articles_from_bucket(user_id, bucket_name, count=5):
@@ -45,6 +45,27 @@ def add_article_to_bucket(user_id, bucket_name, article_id):
     except MitoError as m:
         error = m
     return is_added, error
+
+
+def add_articles_to_bucket(user_id, bucket_name, article_ids):
+    error = None
+    try:
+        if type(article_ids) != list or type(article_ids) != set:
+            raise MitoTypeError("article_ids should be a List or a Set")
+
+        user_bucket = UserBucketDao.get_by_userid(user_id)
+        if user_bucket is None:
+            raise EntityNotFoundError("User bucket for user '%s' not found" % (user_id))
+
+        old_count = len(user_bucket[bucket_name])
+
+        user_bucket.__dict__[bucket_name] = list(set(user_bucket.__dict__[bucket_name] + set(article_ids)))
+        user_bucket = UserBucketDao.update(user_bucket)
+
+        move_count = len(user_bucket.__dict__[bucket_name]) - old_count
+    except MitoError as m:
+        error = m
+    return move_count, error
 
 
 def remove_article_from_bucket(user_id, bucket_name, article_id):
