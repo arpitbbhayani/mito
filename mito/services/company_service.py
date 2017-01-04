@@ -3,7 +3,7 @@ from mito.errors import MitoError
 
 
 def create_company(company):
-    error = None
+    company, error = None, None
     try:
         company = CompanyDao.create(company)
     except MitoError as m:
@@ -12,7 +12,7 @@ def create_company(company):
 
 
 def update_company(company):
-    error = None
+    company, error = None, None
     try:
         company = CompanyDao.update(company)
     except MitoError as m:
@@ -21,7 +21,7 @@ def update_company(company):
 
 
 def delete_company(company_name):
-    error = None
+    is_deleted, error = False, None
     try:
         is_deleted = CompanyDao.delete_by_name(company_name)
     except MitoError as m:
@@ -30,7 +30,7 @@ def delete_company(company_name):
 
 
 def get_all_active_companies():
-    error = None
+    companies, error = None, None
     try:
         companies = CompanyDao.get_all_active()
     except MitoError as m:
@@ -39,7 +39,7 @@ def get_all_active_companies():
 
 
 def get_all_companies():
-    error = None
+    companies, error = None, None
     try:
         companies = CompanyDao.get_all_active() + CompanyDao.get_all_inactive()
     except MitoError as m:
@@ -48,7 +48,7 @@ def get_all_companies():
 
 
 def get_by_name(company_name):
-    error = None
+    companies, error = None, None
     try:
         companies = CompanyDao.get_by_name(company_name)
     except MitoError as m:
@@ -57,7 +57,7 @@ def get_by_name(company_name):
 
 
 def get_by_id(company_id):
-    error = None
+    company, error = None, None
     try:
         company = CompanyDao.get_by_id(company_id)
     except MitoError as m:

@@ -26,7 +26,7 @@ class UserBucketDao:
         return data_api.add(user_bucket)
 
     @staticmethod
-    def update(user_subscription):
+    def update(user_bucket):
         db_user_bucket = data_api.get(UserBucket, user_bucket.id)
         db_user_bucket.__dict__.update(user_bucket.__dict__)
         return data_api.update(user_bucket)

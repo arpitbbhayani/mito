@@ -1,9 +1,10 @@
+from mito.entities import UserBucket
 from mito.dao import UserSubscriptionDao, UserBucketDao
 from mito.errors import MitoError, EntityNotFoundError, MitoTypeError
 
 
 def get_articles_from_bucket(user_id, bucket_name, count=5):
-    error = None
+    user_bucket, error = None, None
     try:
         user_bucket = UserBucketDao.get_article_ids_from_bucket(user_id, bucket_name, count=count)
     except MitoError as m:
@@ -12,7 +13,7 @@ def get_articles_from_bucket(user_id, bucket_name, count=5):
 
 
 def get_bucket_for_user(user_id):
-    error = None
+    user_bucket, error = None, None
     try:
         user_bucket = UserBucketDao.get_by_userid(user_id)
     except MitoError as m:
@@ -21,7 +22,7 @@ def get_bucket_for_user(user_id):
 
 
 def create_user_bucket(user_bucket):
-    error = None
+    user_bucket, error = None, None
     try:
         user_bucket = UserBucketDao.create(user_bucket)
     except MitoError as m:
@@ -29,8 +30,24 @@ def create_user_bucket(user_bucket):
     return user_bucket, error
 
 
+def create_blank_user_bucket(user_id):
+    user_bucket, error = None, None
+    try:
+        user_bucket = UserBucket(user_id=user_id)
+        user_bucket.__dict__.update({
+            UserBucket.READ_BUCKET_NAME: [],
+            UserBucket.UNREAD_BUCKET_NAME: [],
+            UserBucket.LIKED_BUCKET_NAME: [],
+            UserBucket.RECOMMENDED_BUCKET_NAME: []
+        })
+        user_bucket = UserBucketDao.create(user_bucket)
+    except MitoError as m:
+        error = m
+    return user_bucket, error
+
+
 def add_article_to_bucket(user_id, bucket_name, article_id):
-    error = None
+    is_added, error = False, None
     try:
         user_bucket = UserBucketDao.get_by_userid(user_id)
         if user_bucket is None:
@@ -48,18 +65,20 @@ def add_article_to_bucket(user_id, bucket_name, article_id):
 
 
 def add_articles_to_bucket(user_id, bucket_name, article_ids):
-    error = None
+    move_count, error = 0, None
     try:
-        if type(article_ids) != list or type(article_ids) != set:
+        if type(article_ids) != list and type(article_ids) != set:
             raise MitoTypeError("article_ids should be a List or a Set")
 
         user_bucket = UserBucketDao.get_by_userid(user_id)
         if user_bucket is None:
-            raise EntityNotFoundError("User bucket for user '%s' not found" % (user_id))
+            user_bucket, error = create_blank_user_bucket(user_id)
+            if error:
+                raise error
 
-        old_count = len(user_bucket[bucket_name])
+        old_count = len(user_bucket.__dict__[bucket_name])
 
-        user_bucket.__dict__[bucket_name] = list(set(user_bucket.__dict__[bucket_name] + set(article_ids)))
+        user_bucket.__dict__[bucket_name] = list(set(user_bucket.__dict__[bucket_name] + article_ids))
         user_bucket = UserBucketDao.update(user_bucket)
 
         move_count = len(user_bucket.__dict__[bucket_name]) - old_count
@@ -69,7 +88,7 @@ def add_articles_to_bucket(user_id, bucket_name, article_ids):
 
 
 def remove_article_from_bucket(user_id, bucket_name, article_id):
-    error = None
+    is_removed, error = False, None
     try:
         user_bucket = UserBucketDao.get_by_userid(user_id)
         if user_bucket is None:
@@ -91,9 +110,7 @@ def remove_article_from_bucket(user_id, bucket_name, article_id):
 
 
 def move_articles(user_id, source_bucket_name, destination_bucket_name, count=5):
-    error = None
-    article_count = 0
-
+    article_count, error = 0, None
     try:
         user_bucket = UserBucketDao.get_by_userid(user_id)
         if user_bucket is None:

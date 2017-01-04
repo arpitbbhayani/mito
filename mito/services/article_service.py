@@ -3,7 +3,7 @@ from mito.errors import MitoError
 
 
 def create_article(article):
-    error = None
+    article, error = None, None
     try:
         article = ArticleDao.create(article)
     except MitoError as m:

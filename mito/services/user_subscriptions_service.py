@@ -3,7 +3,7 @@ from mito.errors import MitoError, EntityNotFoundError
 
 
 def get_subscriptions_for_user(user_id):
-    error = None
+    user_subscription, error = None, None
     try:
         user_subscription = UserSubscriptionDao.get_by_userid(user_id)
     except MitoError as m:
@@ -12,7 +12,7 @@ def get_subscriptions_for_user(user_id):
 
 
 def create_user_subscription(user_subscription):
-    error = None
+    user_subscription, error = None, None
     try:
         user_subscription = UserSubscriptionDao.create(user_subscription)
     except MitoError as m:
@@ -21,7 +21,7 @@ def create_user_subscription(user_subscription):
 
 
 def subscribe_to_company(user_id, company_id):
-    error = None
+    user_subscription, error = None, None
     try:
         company = CompanyDao.get_by_id(company_id)
         if company is None:
@@ -39,7 +39,7 @@ def subscribe_to_company(user_id, company_id):
 
 
 def unsubscribe_from_company(user_id, company_id):
-    error = None
+    user_subscription, error = None, None
     try:
         company = CompanyDao.get_by_id(company_id)
         if company is None:

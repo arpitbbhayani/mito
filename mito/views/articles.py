@@ -4,7 +4,7 @@ from flasksr import LayoutSR, Component, Dom, Layout
 
 from mito.decorators import roles_required
 from mito.render_helpers import common_page, articles_page
-from mito.services import user_bucket_service
+from mito.services import user_bucket_service, recommendation_service
 
 mod = Blueprint('articles', __name__, )
 
@@ -48,4 +48,7 @@ def populate_from_bucket():
 @login_required
 @roles_required('admin')
 def recommend_articles(user_id):
+    move_count, error = recommendation_service.recommend_articles(user_id)
+    if error:
+        return jsonify(error.jsonify())
     return jsonify(count=0)

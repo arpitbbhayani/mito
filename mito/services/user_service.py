@@ -3,7 +3,7 @@ from mito.errors import MitoError
 
 
 def create_user(user):
-    error = None
+    user, error = None, None
     try:
         user = UserDao.create(user)
     except MitoError as m:
@@ -12,7 +12,7 @@ def create_user(user):
 
 
 def update_user(user_id, **kwargs):
-    error = None
+    user, error = None, None
     try:
         user = UserDao.get_by_id(user_id)
         user.__dict__.update(kwargs)
@@ -23,7 +23,7 @@ def update_user(user_id, **kwargs):
 
 
 def get_by_id(user_id):
-    error = None
+    user, error = None, None
     try:
         user = UserDao.get_by_id(user_id)
     except MitoError as m:
@@ -32,7 +32,7 @@ def get_by_id(user_id):
 
 
 def get_by_email(email):
-    error = None
+    user, error = None, None
     try:
         user = UserDao.get_by_email(email)
     except MitoError as m:
