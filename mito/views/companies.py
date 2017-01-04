@@ -1,7 +1,8 @@
-from flask import Blueprint, request, flash, redirect, url_for
+from flask import Blueprint, request, flash, redirect, url_for, abort
 from flask_login import login_required, current_user
 from flasksr import LayoutSR, Component, Dom, Layout
 
+from mito.decorators import roles_required
 from mito.render_helpers import common_page, companies_page
 from mito.entities import Company
 from mito.services import company_service
@@ -37,6 +38,7 @@ def all_companies():
 
 @mod.route('/add', methods=["GET", "POST"])
 @login_required
+@roles_required('admin')
 def add_company():
     if request.method == 'GET':
         return LayoutSR(
@@ -52,6 +54,9 @@ def add_company():
     company_icon64 = request.form.get('icon64')
     company_icon256 = request.form.get('icon256')
 
+    if not company_name:
+        abort(400)
+
     company = Company(name=company_name, display_name=company_display_name,
                       icon64=company_icon64, icon256=company_icon256,
                       is_active=True)
@@ -65,6 +70,7 @@ def add_company():
 
 @mod.route('/edit/<company_name>', methods=["GET", "POST"])
 @login_required
+@roles_required('admin')
 def edit_company(company_name):
     if request.method == 'GET':
         return LayoutSR(

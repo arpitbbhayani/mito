@@ -2,6 +2,7 @@ from flask import Blueprint, request, redirect, url_for
 from flask_login import login_required, current_user
 from flasksr import LayoutSR, Component, Dom, Layout
 
+from mito.decorators import roles_required
 from mito.render_helpers import common_page
 from mito.render_helpers.admin import user_management_page
 from mito.entities import User
@@ -12,6 +13,7 @@ mod = Blueprint('user_management', __name__, )
 
 @mod.route('/', methods=["GET"])
 @login_required
+@roles_required('admin')
 def index():
     user_email = request.args.get('email')
 
@@ -28,6 +30,7 @@ def index():
 
 @mod.route('/save/<user_id>', methods=["POST"])
 @login_required
+@roles_required('admin')
 def save_user(user_id):
     roles = set([key.split('-')[1] for key, value in request.form.items()
                  if key.startswith('role-') and key.split('-')[1] in User.valid_roles])
