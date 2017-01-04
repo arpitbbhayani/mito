@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, redirect, url_for
 from flask_login import login_required, current_user
 from flasksr import LayoutSR, Component, Dom, Layout
 
@@ -24,3 +24,16 @@ def index():
                     Dom(common_page.render_top_menu, current_user.is_authenticated)),
         post_stream=Dom(common_page.render_post_body)
     ).response
+
+
+@mod.route('/save/<user_id>', methods=["POST"])
+@login_required
+def save_user(user_id):
+    roles = set([key.split('-')[1] for key, value in request.form.items()
+                 if key.startswith('role-') and key.split('-')[1] in User.valid_roles])
+
+    user, error = user_service.update_user(user_id, roles=list(roles))
+    if error:
+        return jsonify(error.jsonify())
+
+    return redirect(url_for('user_management.index'))

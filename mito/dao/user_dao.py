@@ -14,8 +14,10 @@ class UserDao:
         return data_api.add(user)
 
     @staticmethod
-    def update(record):
-        print("Updating the record")
+    def update(user):
+        db_user = data_api.get(User, user.id)
+        db_user.__dict__.update(user.__dict__)
+        return data_api.update(db_user)
 
     @staticmethod
     def get_by_id(guid):

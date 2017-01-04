@@ -7,6 +7,8 @@ class User(UserMixin):
     __indexed_attrs__ = ['email']
     __attrs__ = ['email', 'roles']
 
+    valid_roles = ['user', 'admin']
+
     def __init__(self, **kwargs):
         data = {k: v for k, v in kwargs.items() if k in self.__attrs__}
         self.__dict__.update(data)

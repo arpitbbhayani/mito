@@ -1,6 +1,7 @@
 from flask import render_template
 
 from mito import app
+from mito.entities import User
 from mito.services import user_service, user_subscriptions_service, company_service
 
 
@@ -11,7 +12,6 @@ def render_user_search_bar():
 
 def render_user_profile_edit_form(user_email):
     with app.app_context():
-
         if user_email is None:
             return ""
 
@@ -22,7 +22,7 @@ def render_user_profile_edit_form(user_email):
         if user is None:
             return "User %s does not exists" % (user_email)
 
-        return render_template('admin/user_management_page/user_profile_edit_form.html', user=user)
+        return render_template('admin/user_management_page/user_profile_edit_form.html', user=user, roles=User.valid_roles)
 
 
 def render_user_subscriptions(user_email):

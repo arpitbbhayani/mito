@@ -1,8 +1,18 @@
-<form class="ui form" method="POST" action="">
+<form class="ui form" method="POST" action="{{url_for('user_management.save_user', user_id=user.id)}}">
     <div class="ui input field">
-        <input type="text" readonly value="{{user.email}}"/>
+        <input type="text" readonly value="{{user.email}}" name="email"/>
     </div>
+    {% for role in roles %}
+    <div class="ui checkbox">
+        <input type="checkbox" name="role-{{role}}" {% if role in user.roles %}checked{% endif %}>
+        <label>{{role}}</label>
+    </div>
+    {% endfor %}
     <div class="ui field">
         <input type="submit" value="Save"/>
     </div>
 </form>
+
+<script>
+$('.ui.checkbox').checkbox();
+</script>
