@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
 from flasksr import LayoutSR, Component, Dom, Layout
 
+from mito.decorators import roles_required
 from mito.render_helpers import common_page, articles_page
 from mito.services import user_bucket_service
 
@@ -40,4 +41,11 @@ def populate_from_bucket():
     """
     user_id = current_user.id
     actual_moved, error = user_bucket_service.move_articles(user_id, 'recommended', 'unread', count=5)
-    return jsonify(count=actual_moved)
+    return redirect(url_for('articles.index'))
+
+
+@mod.route('/recommended/populate/<user_id>', methods=["POST"])
+@login_required
+@roles_required('admin')
+def recommend_articles(user_id):
+    return jsonify(count=0)

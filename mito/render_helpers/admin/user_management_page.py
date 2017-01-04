@@ -10,6 +10,18 @@ def render_user_search_bar():
         return render_template('admin/user_management_page/user_search.html')
 
 
+def render_user_article_actions(user_email):
+    with app.app_context():
+        if user_email is None:
+            return ""
+
+        user, error = user_service.get_by_email(user_email)
+        if error:
+            return error.description
+
+        return render_template('admin/user_management_page/user_article_actions.html', user=user)
+
+
 def render_user_profile_edit_form(user_email):
     with app.app_context():
         if user_email is None:

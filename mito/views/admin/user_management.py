@@ -21,6 +21,7 @@ def index():
         Component('user-search-bar', user_management_page.render_user_search_bar),
         Component('user-profile-edit-form', user_management_page.render_user_profile_edit_form, user_email=user_email),
         Component('user-subscriptions', user_management_page.render_user_subscriptions, user_email=user_email),
+        Component('user-article-actions', user_management_page.render_user_article_actions, user_email=user_email),
         layout=Layout(user_management_page.render_layout),
         pre_stream=(Dom(common_page.render_pre_body),
                     Dom(common_page.render_top_menu, current_user.is_authenticated)),
@@ -28,14 +29,14 @@ def index():
     ).response
 
 
-@mod.route('/save/<user_id>', methods=["POST"])
+@mod.route('/save', methods=["POST"])
 @login_required
 @roles_required('admin')
-def save_user(user_id):
+def save_user():
     roles = set([key.split('-')[1] for key, value in request.form.items()
                  if key.startswith('role-') and key.split('-')[1] in User.valid_roles])
 
-    user, error = user_service.update_user(user_id, roles=list(roles))
+    user, error = user_service.update_user(current_user.id, roles=list(roles))
     if error:
         return jsonify(error.jsonify())
 
